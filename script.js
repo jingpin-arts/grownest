@@ -6,6 +6,17 @@ const frequencyInput = document.getElementById('frequency');
 const calculateBtn = document.getElementById('calculateBtn');
 const resultValue = document.getElementById('resultValue');
 const resultSummary = document.getElementById('resultSummary');
+const createProfileBtn = document.getElementById('createProfileBtn');
+const profileStatus = document.getElementById('profileStatus');
+const userNameInput = document.getElementById('userName');
+const userEmailInput = document.getElementById('userEmail');
+const userPhoneInput = document.getElementById('userPhone');
+const depositBtn = document.getElementById('depositBtn');
+const depositAmountInput = document.getElementById('depositAmount');
+const depositPhoneInput = document.getElementById('depositPhone');
+const depositStatus = document.getElementById('depositStatus');
+
+let userProfile = null;
 
 function formatCurrency(value) {
   return new Intl.NumberFormat('en-US', {
@@ -13,6 +24,61 @@ function formatCurrency(value) {
     currency: 'USD',
     maximumFractionDigits: 0,
   }).format(value);
+}
+
+function setProfileStatus(message) {
+  profileStatus.textContent = message;
+}
+
+function setDepositStatus(message) {
+  depositStatus.textContent = message;
+}
+
+function createProfile() {
+  const name = userNameInput.value.trim();
+  const email = userEmailInput.value.trim();
+  const phone = userPhoneInput.value.trim();
+
+  if (!name || !email || !phone) {
+    setProfileStatus('Please fill in all profile fields before creating your profile.');
+    return;
+  }
+
+  userProfile = {
+    name,
+    email,
+    phone,
+    balance: parseFloat(currentAmountInput.value) || 0,
+  };
+
+  setProfileStatus(`Profile created for ${name}. Linked MPesa number: ${phone}. Current balance: ${formatCurrency(userProfile.balance)}.`);
+  setDepositStatus('Ready for MPesa deposits. Use the same linked number to deposit funds.');
+}
+
+function makeMpesaDeposit() {
+  if (!userProfile) {
+    setDepositStatus('Please create your profile first before making an MPesa deposit.');
+    return;
+  }
+
+  const depositAmount = parseFloat(depositAmountInput.value) || 0;
+  const phone = depositPhoneInput.value.trim();
+
+  if (depositAmount <= 0) {
+    setDepositStatus('Enter a valid deposit amount greater than zero.');
+    return;
+  }
+
+  if (phone !== userProfile.phone) {
+    setDepositStatus('Please use the linked MPesa phone number for this deposit.');
+    return;
+  }
+
+  userProfile.balance += depositAmount;
+  currentAmountInput.value = userProfile.balance.toFixed(0);
+  updateResults();
+
+  setDepositStatus(`Deposit successful. ${formatCurrency(depositAmount)} added via MPesa ${phone}. New balance: ${formatCurrency(userProfile.balance)}.`);
 }
 
 function calculateFutureValue(principal, monthlyDeposit, annualRate, years, compoundingPeriods) {
@@ -48,4 +114,6 @@ function updateResults() {
 }
 
 calculateBtn.addEventListener('click', updateResults);
+createProfileBtn.addEventListener('click', createProfile);
+depositBtn.addEventListener('click', makeMpesaDeposit);
 window.addEventListener('load', updateResults);
