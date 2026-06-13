@@ -147,6 +147,33 @@
       </ul>
     </section>
   </main>
+
+  <div id="mpesaModal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>MPesa Payment</h3>
+        <button id="closeModal" class="close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="mpesaStep1" class="mpesa-step">
+          <p>Amount to pay:</p>
+          <p class="amount-display" id="mpesaAmount">KES 0</p>
+          <p>Recipient: GrowSave Savings</p>
+          <button id="confirmPaymentBtn" class="button">Confirm Payment</button>
+          <button id="cancelPaymentBtn" class="button secondary">Cancel</button>
+        </div>
+        <div id="mpesaStep2" class="mpesa-step hidden">
+          <p>Enter your MPesa PIN:</p>
+          <input type="password" id="mpesaPin" placeholder="****" maxlength="4" />
+          <button id="submitPinBtn" class="button">Submit PIN</button>
+        </div>
+        <div id="mpesaStep3" class="mpesa-step hidden">
+          <p id="mpesaMessage">Processing payment...</p>
+          <div class="spinner"></div>
+        </div>
+      </div>
+    </div>
+  </div>
   <script src="script.js"></script>
 </body>
 </html>

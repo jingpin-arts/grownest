@@ -174,3 +174,99 @@ h1 {
     grid-template-columns: 1fr;
   }
 }
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 1.5rem;
+  padding: 0;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 24px 80px rgba(15, 23, 42, 0.2);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.75rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-header h3 {
+  margin: 0;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: #6b7280;
+}
+
+.modal-body {
+  padding: 1.75rem;
+}
+
+.mpesa-step {
+  display: grid;
+  gap: 1rem;
+  text-align: center;
+}
+
+.mpesa-step.hidden {
+  display: none;
+}
+
+.amount-display {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #2563eb;
+  margin: 1rem 0;
+}
+
+.mpesa-step input {
+  width: 100%;
+  padding: 0.95rem 1rem;
+  font-size: 1.5rem;
+  text-align: center;
+  letter-spacing: 0.5rem;
+  border-radius: 0.85rem;
+  border: 2px solid #d1d5db;
+  outline: none;
+}
+
+.mpesa-step input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
+}
+
+.spinner {
+  width: 3rem;
+  height: 3rem;
+  margin: 1.5rem auto;
+  border: 3px solid #e5e7eb;
+  border-top-color: #2563eb;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

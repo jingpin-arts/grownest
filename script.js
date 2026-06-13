@@ -18,8 +18,20 @@ const depositStatus = document.getElementById('depositStatus');
 const withdrawBtn = document.getElementById('withdrawBtn');
 const withdrawAmountInput = document.getElementById('withdrawAmount');
 const accountSummary = document.getElementById('accountSummary');
+const mpesaModal = document.getElementById('mpesaModal');
+const closeModal = document.getElementById('closeModal');
+const confirmPaymentBtn = document.getElementById('confirmPaymentBtn');
+const cancelPaymentBtn = document.getElementById('cancelPaymentBtn');
+const submitPinBtn = document.getElementById('submitPinBtn');
+const mpesaPin = document.getElementById('mpesaPin');
+const mpesaAmount = document.getElementById('mpesaAmount');
+const mpesaMessage = document.getElementById('mpesaMessage');
+const mpesaStep1 = document.getElementById('mpesaStep1');
+const mpesaStep2 = document.getElementById('mpesaStep2');
+const mpesaStep3 = document.getElementById('mpesaStep3');
 
 let userProfile = null;
+let pendingDepositAmount = 0;
 
 function formatCurrency(value) {
   return new Intl.NumberFormat('en-KE', {
@@ -94,6 +106,47 @@ function makeMpesaDeposit() {
     return;
   }
 
+  pendingDepositAmount = depositAmount;
+  mpesaAmount.textContent = formatCurrency(depositAmount);
+  showMpesaModal();
+}
+
+function showMpesaModal() {
+  mpesaModal.classList.remove('hidden');
+  mpesaStep1.classList.remove('hidden');
+  mpesaStep2.classList.add('hidden');
+  mpesaStep3.classList.add('hidden');
+  mpesaPin.value = '';
+}
+
+function hideMpesaModal() {
+  mpesaModal.classList.add('hidden');
+}
+
+function processMpesaPayment() {
+  mpesaStep1.classList.add('hidden');
+  mpesaStep2.classList.remove('hidden');
+  mpesaPin.focus();
+}
+
+function submitMpesaPin() {
+  const pin = mpesaPin.value;
+  if (pin.length !== 4 || isNaN(pin)) {
+    setDepositStatus('Please enter a valid 4-digit PIN.');
+    return;
+  }
+
+  mpesaStep2.classList.add('hidden');
+  mpesaStep3.classList.remove('hidden');
+  mpesaMessage.textContent = 'Processing payment...';
+
+  setTimeout(() => {
+    completeMpesaTransaction();
+  }, 2000);
+}
+
+function completeMpesaTransaction() {
+  const depositAmount = pendingDepositAmount;
   let bonus = 0;
   if (depositAmount >= 100) {
     bonus = depositAmount * 0.02;
@@ -105,7 +158,13 @@ function makeMpesaDeposit() {
   updateResults();
   updateAccountSummary();
 
-  setDepositStatus(`Deposit successful. ${formatCurrency(depositAmount)} added via MPesa ${phone}. Bonus ${formatCurrency(bonus)} awarded. New balance: ${formatCurrency(userProfile.balance)}.`);
+  mpesaMessage.textContent = `✓ Payment successful! KES ${depositAmount.toFixed(0)} + KES ${bonus.toFixed(0)} bonus added.`;
+
+  setTimeout(() => {
+    hideMpesaModal();
+    setDepositStatus(`Deposit successful. ${formatCurrency(depositAmount)} added via MPesa. Bonus ${formatCurrency(bonus)} awarded. New balance: ${formatCurrency(userProfile.balance)}.`);
+    depositAmountInput.value = '50';
+  }, 1500);
 }
 
 function withdrawFunds() {
@@ -170,6 +229,13 @@ calculateBtn.addEventListener('click', updateResults);
 createProfileBtn.addEventListener('click', createProfile);
 depositBtn.addEventListener('click', makeMpesaDeposit);
 withdrawBtn.addEventListener('click', withdrawFunds);
+closeModal.addEventListener('click', hideMpesaModal);
+cancelPaymentBtn.addEventListener('click', hideMpesaModal);
+confirmPaymentBtn.addEventListener('click', processMpesaPayment);
+submitPinBtn.addEventListener('click', submitMpesaPin);
+mpesaPin.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') submitMpesaPin();
+});
 window.addEventListener('load', () => {
   updateResults();
   updateAccountSummary();
