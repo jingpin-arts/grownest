@@ -1,1 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GrowSave — Savings & Investment</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="container">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">Smart saving starts here</p>
+        <h1>Grow Your Savings with Confidence</h1>
+        <p>Track savings, compare investment options, and visualize how small deposits can become bigger returns.</p>
+        <a href="#calculator" class="button">Try the Growth Calculator</a>
+      </div>
+      <div class="hero-card">
+        <h2>Why it works</h2>
+        <ul>
+          <li>Save regularly</li>
+          <li>Pick a growth strategy</li>
+          <li>See your future value instantly</li>
+        </ul>
+      </div>
+    </header>
 
+    <section id="calculator" class="section card">
+      <h2>Savings Growth Calculator</h2>
+      <p>Estimate how your deposits grow with interest over time.</p>
+      <div class="calculator-grid">
+        <div class="form-group">
+          <label for="currentAmount">Current savings ($)</label>
+          <input type="number" id="currentAmount" min="0" value="1000" />
+        </div>
+        <div class="form-group">
+          <label for="monthlyDeposit">Monthly deposit ($)</label>
+          <input type="number" id="monthlyDeposit" min="0" value="200" />
+        </div>
+        <div class="form-group">
+          <label for="annualRate">Annual return rate (%)</label>
+          <input type="number" id="annualRate" min="0" step="0.1" value="5" />
+        </div>
+        <div class="form-group">
+          <label for="years">Time horizon (years)</label>
+          <input type="number" id="years" min="1" value="10" />
+        </div>
+        <div class="form-group full-width">
+          <label for="frequency">Compounding frequency</label>
+          <select id="frequency">
+            <option value="12">Monthly</option>
+            <option value="4">Quarterly</option>
+            <option value="1">Annually</option>
+          </select>
+        </div>
+        <button id="calculateBtn" class="button secondary full-width">Calculate Growth</button>
+      </div>
+
+      <div class="result-card">
+        <h3>Projected value</h3>
+        <p id="resultValue">$0.00</p>
+        <p id="resultSummary">Enter your details and click calculate to see your savings grow.</p>
+      </div>
+    </section>
+
+    <section class="section cards-grid">
+      <article class="card highlight">
+        <h3>Steady Saver</h3>
+        <p>Best for disciplined monthly savings with lower risk and consistent growth.</p>
+      </article>
+      <article class="card highlight">
+        <h3>Balanced Investor</h3>
+        <p>Mix savings accounts with low-fee index funds to build wealth over time.</p>
+      </article>
+      <article class="card highlight">
+        <h3>Growth Booster</h3>
+        <p>Use higher-yield options only after establishing an emergency savings buffer.</p>
+      </article>
+    </section>
+
+    <section class="section card">
+      <h2>How to grow your savings</h2>
+      <ul class="tips-list">
+        <li>Save first, spend later. Automate deposits to stay consistent.</li>
+        <li>Choose the right account: high-yield savings, CDs, or broad index funds.</li>
+        <li>Review progress every 3–6 months and adjust contributions.</li>
+      </ul>
+    </section>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
