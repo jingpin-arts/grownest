@@ -25,6 +25,50 @@
       </div>
     </header>
 
+    <section id="profile" class="section card">
+      <h2>Your Profile</h2>
+      <p>Create your savings account profile and link an MPesa phone number to deposit funds securely.</p>
+      <div class="calculator-grid">
+        <div class="form-group">
+          <label for="userName">Full name</label>
+          <input type="text" id="userName" placeholder="Jane Doe" />
+        </div>
+        <div class="form-group">
+          <label for="userEmail">Email address</label>
+          <input type="email" id="userEmail" placeholder="jane@example.com" />
+        </div>
+        <div class="form-group">
+          <label for="userPhone">MPesa phone number</label>
+          <input type="tel" id="userPhone" placeholder="254700123456" />
+        </div>
+        <button id="createProfileBtn" class="button secondary full-width">Create Profile</button>
+      </div>
+      <div class="result-card">
+        <h3>Profile status</h3>
+        <p id="profileStatus">No profile created yet.</p>
+      </div>
+    </section>
+
+    <section id="deposit" class="section card">
+      <h2>Deposit with MPesa</h2>
+      <p>Top up your savings instantly using MPesa and watch your projection improve.</p>
+      <div class="calculator-grid">
+        <div class="form-group">
+          <label for="depositAmount">Deposit amount ($)</label>
+          <input type="number" id="depositAmount" min="0" value="50" />
+        </div>
+        <div class="form-group">
+          <label for="depositPhone">Confirm MPesa phone</label>
+          <input type="tel" id="depositPhone" placeholder="254700123456" />
+        </div>
+        <button id="depositBtn" class="button secondary full-width">Send MPesa Deposit</button>
+      </div>
+      <div class="result-card">
+        <h3>Deposit status</h3>
+        <p id="depositStatus">Create a profile first, then make an MPesa deposit.</p>
+      </div>
+    </section>
+
     <section id="calculator" class="section card">
       <h2>Savings Growth Calculator</h2>
       <p>Estimate how your deposits grow with interest over time.</p>
@@ -84,7 +128,10 @@
         <li>Save first, spend later. Automate deposits to stay consistent.</li>
         <li>Choose the right account: high-yield savings, CDs, or broad index funds.</li>
         <li>Review progress every 3–6 months and adjust contributions.</li>
-      </ul>
+      </ul>a upload
+      31 minutes ago
+      README.md
+      grownest
     </section>
   </main>
   <script src="script.js"></script>
