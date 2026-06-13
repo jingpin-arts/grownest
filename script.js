@@ -15,13 +15,16 @@ const depositBtn = document.getElementById('depositBtn');
 const depositAmountInput = document.getElementById('depositAmount');
 const depositPhoneInput = document.getElementById('depositPhone');
 const depositStatus = document.getElementById('depositStatus');
+const withdrawBtn = document.getElementById('withdrawBtn');
+const withdrawAmountInput = document.getElementById('withdrawAmount');
+const accountSummary = document.getElementById('accountSummary');
 
 let userProfile = null;
 
 function formatCurrency(value) {
-  return new Intl.NumberFormat('en-US', {
+  return new Intl.NumberFormat('en-KE', {
     style: 'currency',
-    currency: 'USD',
+    currency: 'KES',
     maximumFractionDigits: 0,
   }).format(value);
 }
@@ -34,6 +37,15 @@ function setDepositStatus(message) {
   depositStatus.textContent = message;
 }
 
+function updateAccountSummary() {
+  if (!userProfile) {
+    accountSummary.textContent = 'Create a profile to see your bonus and withdraw options.';
+    return;
+  }
+
+  accountSummary.textContent = `Account for ${userProfile.name}: balance ${formatCurrency(userProfile.balance)}, bonus total ${formatCurrency(userProfile.bonusEarned)}, withdrawn ${formatCurrency(userProfile.withdrawn)}.`;
+}
+
 function createProfile() {
   const name = userNameInput.value.trim();
   const email = userEmailInput.value.trim();
@@ -44,15 +56,23 @@ function createProfile() {
     return;
   }
 
+  const initialBalance = parseFloat(currentAmountInput.value) || 0;
+
   userProfile = {
     name,
     email,
     phone,
-    balance: parseFloat(currentAmountInput.value) || 0,
+    balance: initialBalance,
+    bonusEarned: 10,
+    withdrawn: 0,
   };
 
-  setProfileStatus(`Profile created for ${name}. Linked MPesa number: ${phone}. Current balance: ${formatCurrency(userProfile.balance)}.`);
+  currentAmountInput.value = userProfile.balance.toFixed(0);
+  setProfileStatus(`Profile created for ${name}. Welcome bonus of ${formatCurrency(10)} applied. Linked MPesa number: ${phone}.`);
   setDepositStatus('Ready for MPesa deposits. Use the same linked number to deposit funds.');
+  userProfile.balance += 10;
+  updateResults();
+  updateAccountSummary();
 }
 
 function makeMpesaDeposit() {
@@ -74,11 +94,44 @@ function makeMpesaDeposit() {
     return;
   }
 
-  userProfile.balance += depositAmount;
+  let bonus = 0;
+  if (depositAmount >= 100) {
+    bonus = depositAmount * 0.02;
+    userProfile.bonusEarned += bonus;
+  }
+
+  userProfile.balance += depositAmount + bonus;
   currentAmountInput.value = userProfile.balance.toFixed(0);
   updateResults();
+  updateAccountSummary();
 
-  setDepositStatus(`Deposit successful. ${formatCurrency(depositAmount)} added via MPesa ${phone}. New balance: ${formatCurrency(userProfile.balance)}.`);
+  setDepositStatus(`Deposit successful. ${formatCurrency(depositAmount)} added via MPesa ${phone}. Bonus ${formatCurrency(bonus)} awarded. New balance: ${formatCurrency(userProfile.balance)}.`);
+}
+
+function withdrawFunds() {
+  if (!userProfile) {
+    accountSummary.textContent = 'Create your profile first before withdrawing funds.';
+    return;
+  }
+
+  const withdrawAmount = parseFloat(withdrawAmountInput.value) || 0;
+  if (withdrawAmount <= 0) {
+    accountSummary.textContent = 'Enter an amount greater than zero to withdraw.';
+    return;
+  }
+
+  if (withdrawAmount > userProfile.balance) {
+    accountSummary.textContent = 'Insufficient balance for that withdrawal amount.';
+    return;
+  }
+
+  userProfile.balance -= withdrawAmount;
+  userProfile.withdrawn += withdrawAmount;
+  currentAmountInput.value = userProfile.balance.toFixed(0);
+  updateResults();
+  updateAccountSummary();
+
+  accountSummary.textContent = `Withdrawal complete. ${formatCurrency(withdrawAmount)} withdrawn. Remaining balance: ${formatCurrency(userProfile.balance)}.`;
 }
 
 function calculateFutureValue(principal, monthlyDeposit, annualRate, years, compoundingPeriods) {
@@ -116,4 +169,8 @@ function updateResults() {
 calculateBtn.addEventListener('click', updateResults);
 createProfileBtn.addEventListener('click', createProfile);
 depositBtn.addEventListener('click', makeMpesaDeposit);
-window.addEventListener('load', updateResults);
+withdrawBtn.addEventListener('click', withdrawFunds);
+window.addEventListener('load', () => {
+  updateResults();
+  updateAccountSummary();
+});
