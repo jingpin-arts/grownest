@@ -51,7 +51,7 @@
 
     <section id="deposit" class="section card">
       <h2>Deposit with MPesa</h2>
-      <p>Top up your savings instantly using MPesa and watch your projection improve.</p>
+      <p>Top up your savings instantly using MPesa and watch your projection improve. Deposits above $100 earn a 2% bonus.</p>
       <div class="calculator-grid">
         <div class="form-group">
           <label for="depositAmount">Deposit amount ($)</label>
@@ -66,6 +66,22 @@
       <div class="result-card">
         <h3>Deposit status</h3>
         <p id="depositStatus">Create a profile first, then make an MPesa deposit.</p>
+      </div>
+    </section>
+
+    <section id="account" class="section card">
+      <h2>Account & Withdrawal</h2>
+      <p>Withdraw funds from your balance or check your bonus and account summary.</p>
+      <div class="calculator-grid">
+        <div class="form-group">
+          <label for="withdrawAmount">Withdraw amount ($)</label>
+          <input type="number" id="withdrawAmount" min="0" value="0" />
+        </div>
+        <button id="withdrawBtn" class="button secondary full-width">Withdraw Funds</button>
+      </div>
+      <div class="result-card">
+        <h3>Account summary</h3>
+        <p id="accountSummary">Create a profile to see your bonus and withdraw options.</p>
       </div>
     </section>
 
@@ -128,10 +144,7 @@
         <li>Save first, spend later. Automate deposits to stay consistent.</li>
         <li>Choose the right account: high-yield savings, CDs, or broad index funds.</li>
         <li>Review progress every 3–6 months and adjust contributions.</li>
-      </ul>a upload
-      31 minutes ago
-      README.md
-      grownest
+      </ul>
     </section>
   </main>
   <script src="script.js"></script>
